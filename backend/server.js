@@ -1,16 +1,16 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const cors = require('cors');
 
 const app = express();
-app.use(cors({ origin: ' }));
-
 const server = http.createServer(app);
+
+// Настройка CORS для Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
+    origin: "https://vikastrizkova.github.io", // или "*" для теста
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -32,6 +32,8 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log('🚀 Бэкенд запущен: http://localhost:3001');
+// Обязательно используем порт из переменной окружения Render
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
+  console.log(`🚀 Бэкенд запущен: http://localhost:${PORT}`);
 });
